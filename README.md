@@ -1,2 +1,2 @@
 # dotfiles
-my dotfiles configuration
+my dotfiles configuration for Lenovo Laptop

@@ -1,0 +1,14 @@
+##---------Add all & commit------------
+#$ gac 'mensaje'
+gac(){ git add . && git commit -m "$1"; }
+
+##---------Checkout------------------------
+##$ gc rama
+gc(){ git checkout $1;}
+
+##---------New Branch------------------------
+##$ gcb rama
+gcb(){ git checkout -b $1;}
+
+##---------Pull && Push rama Actual--------------------------------  
+gpp(){ git pull origin $(git rev-parse --symbolic-full-name --abbrev-ref HEAD) && git push origin $(git rev-parse --symbolic-full-name --abbrev-ref HEAD);}

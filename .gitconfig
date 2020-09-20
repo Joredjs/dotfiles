@@ -1,0 +1,7 @@
+[core]
+	editor = \"C:\\Users\\jorge\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe\" --wait
+[user]
+	name = joredjs
+	email = odraude160@gmail.com
+[winUpdater]
+	recentlySeenVersion = 2.25.0.windows.1
