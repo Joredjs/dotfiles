@@ -1,2 +1,2 @@
-# dorfiles
+# dotfiles
 my dotfiles configuration
