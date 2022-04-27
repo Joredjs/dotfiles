@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Highlight the user name when logged in as root.
+if [[ "${USER}" == "root" ]]; then
+	userStyle="${red:=''}"
+else
+	userStyle="${bg_cyan:=''}"
+fi
+
+# Highlight the hostname when connected via SSH.
+if [[ "${SSH_TTY}" ]]; then
+	hostStyle="${bold:=''}${red:=''}"
+else
+	hostStyle="${bg_violet:=''}"
+fi
+
+# shellcheck disable=SC2034
+branch_txt=" git ${white:=''}${bg_blue:=''}"
+# shellcheck disable=SC2034
+warn_txt="${reset}${orange:=''}"
+
+__PS1_INIT="\[\033]0;${TITLEPREFIX}:'${PWD}'\007\]\n${reset:=''}"
+__PS1_USER="\[${violet:=''}${userStyle}\]\u${reset:=''}"
+__PS1_HOST="\[${cyan:=''}${hostStyle}\]@\H${reset:=''}"
+__PS1_PATH=" in \[${black:=''}${bg_purple:=''}\] \w ${reset:=''}"
+__PS1_TIME=" at \[${black:=''}\]${bg_white:=''}\A\[${reset:=''}\]"
+# shellcheck disable=SC2016
+__PS1_BRANCH='`git_prompt "\$branch_txt" "\$warn_txt"`${reset}`git_stats `'
+#'`__git_ps1`'
+__PS1_END="\n${reset}\[${bold}${orange}\$${reset} \]"
+
+export PS1="${__PS1_INIT}${__PS1_USER}${__PS1_HOST}${__PS1_PATH}${__PS1_BRANCH}${__PS1_TIME}${__PS1_END}"
+
+export PS2="\[${yellow:=''}\]→ \[${reset:=''}\]"

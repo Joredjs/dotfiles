@@ -1,0 +1,111 @@
+#!/bin/bash
+alias_file=$MY_DOTFILES"/.alias"
+functions_file=$MY_DOTFILES"/.functions"
+
+xini="\n*****"
+xend="*****"
+
+#AYUDA
+f1() {
+  if [[ ("$1") ]]; then
+    case $1 in
+    -a)
+      get_my_alias --msj
+      ;;
+    -f)
+      get_my_functions --msj
+      ;;
+    -v)
+      get_my_vars --msj
+      ;;
+    *)
+      echo -e "ERROR: Parámetro incorrecto\n"
+      ;;
+    esac
+
+    echo -e "$xini$xend"
+    txt_spec
+
+  else
+    get_my_help
+  fi
+
+}
+
+#Mensaje para ayuda especifica
+txt_spec() {
+  echo -e "\nPara mostrar ayuda especifica usar f1 -{tema}"
+  echo -e "a=alias     -- uso:$ f1 -a"
+  echo -e "f=funciones -- uso:$ f1 -f"
+  echo -e "v=variables -- uso:$ f1 -v"
+}
+
+#Mostrar listado completo
+get_my_help() {
+  txt_spec
+
+  echo -e "\n-- A continuación la configuración general de tus .files: --\n"
+
+  read -rp  "..."
+  #variables
+  get_my_vars
+  read -rp  "..."
+  #alias
+  get_my_alias
+  read -rp  "..."
+  #funciones
+  get_my_functions
+}
+
+#VARIABLES
+get_my_vars() {
+
+  if [[ ("$1") ]]; then
+    echo -e "\n-- A continuación la configuración general de tus variables: --\n"
+  else
+    echo -e "$xini VARIABLES: $xend\n"
+  fi
+
+  #Recorre las variables globales, si empiezan con MY_* las muestra en pntalla
+  for x in $(env); do
+    if [[ $x == "MY"* ]]; then
+      echo -e "$x"
+    fi
+  done
+}
+
+#ALIAS
+get_my_alias() {
+
+  if [[ ("$1") ]]; then
+    echo -e "\n-- A continuación la configuración general de tus alias: --\n"
+  else
+    echo -e "$xini ALIAS: $xend\n"
+  fi
+
+  #Lee el archivo de alias, muestra en pantalla ocultando los comentarios
+  while IFS= read -r line; do
+    if [[ ($line != "#"*) && ($line != "") ]]; then
+      echo "$line"
+    fi
+    #echo "$line"
+  done <"$alias_file"
+}
+
+#FUNCIONES
+get_my_functions() {
+
+  if [[ ("$1") ]]; then
+    echo -e "\n-- A continuación la configuración general de tus funciones: --\n"
+  else
+    echo -e "$xini FUNCIONES: $xend\n"
+  fi
+
+  #Lee el archivo de funciones, muestra en pantalla los comentarios con 1 '#'
+  while IFS= read -r line; do
+    if [[ ($line != "###"*) && ($line == "##"*) ]]; then
+      nLine="${line/'##end'/}"
+      echo -e "${nLine/'##'/}"
+    fi
+  done <"$functions_file"
+}
