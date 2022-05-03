@@ -9,7 +9,6 @@ alias ....="cd ../../.."
 alias home='cd $MY_HOME'
 alias work='cd $MY_WORK'
 alias config='cd $MY_CONFIG'
-alias claro='cd $MY_WORK/claro'
 
 #utils
 alias f5="source ~/.bash_profile"
@@ -29,6 +28,3 @@ alias gop='git push origin "$(git rev-parse --symbolic-full-name --abbrev-ref HE
 alias gpp='git pull origin "$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)" && gop'
 #alias gdf='git diff --shortstat && git diff --compact-summary'
 
-##ONLY FOR GPE
-alias gpe_admin='work && cd GPE/gpe-web/gpe-admin && ng build --prod && cd .. && firebase deploy --only hosting:admin'
-#end

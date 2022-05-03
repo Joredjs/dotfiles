@@ -1,9 +1,8 @@
 #!/bin/bash
 
-#funcion para crear/editar las carpetas
+#funcion para crear/copiar las carpetas
 ##$1:path
 ##$2:copy path
-
 foldersStuuf() {
   action_txt='crea'
   action_cmd='mkdir -p'
@@ -33,6 +32,37 @@ foldersStuuf() {
   fi
 }
 
+#funcion para editar la configuración
+editarInfo() {
+  if [[ -n "$1" ]]; then
+    while true; do
+      read -rp "Deseas cambiar la información dentro del archivo ${1}? [si/no]: " resp_editar 0</dev/tty
+      case "$resp_editar" in
+      [Ss][Ii] | [Ss])
+        #cambiar información
+        echo -e "... Recuerda cerrar el editor de texto luego de cambiar la información para poder continuar con el proceso ..."
+        "${1}" | code -wr
+        break
+        ;;
+      [Nn][Oo] | [Nn])
+        echo "... Ok!!"
+        break
+        ;;
+      *)
+        echo "... Por favor escribe 'si/s' o 'no/n' aca ..."
+        ;;
+      esac
+    done
+  fi
+}
+
+#validacion de ubicacion del archivo
+parent_folder=$(pwd | rev | cut -d "/" -f 1 | rev)
+if [[ "$parent_folder" != "dotfiles" || ! -d "$(pwd)/Home" || ! -d "$(pwd)/Config" ]]; then
+  echo "Verifica que te encuentres dentro de la carpeta adecuada y vuelve a intentarlo"
+  return 1
+fi
+
 #El nombre de la variable creada en el archivo Home/.bashrc
 var_home="MY_HOME"
 config_home="~"
@@ -43,9 +73,6 @@ done <Home/.bashrc
 
 home_value=$(echo "$config_home" | cut -d "=" -f 2)
 home_value="${home_value//\"/}"
-
-#echo "$home_value"
-#echo "$config_home"
 
 ##Configuración personal
 while true; do
@@ -69,34 +96,32 @@ foldersStuuf "$home_value"
 #Carpeta Config
 foldersStuuf "$home_value/Config" "Config"
 
+#Carpeta Home
 if [[ -z "$HOME" ]]; then
   HOME="~"
 fi
 
-#Carpeta Home
 while true; do
-  read -rp "La ruta de tu carpeta HOME de tu eqipo está configurada como ${HOME}/ ¿Es correcta para proceder a copiar los archivos correspondientes? [si/no]: " resp_home_so
+  read -rp "La ruta de la carpeta HOME de tu eqipo está configurada como ${HOME}/ ¿Es correcta para proceder a copiar los archivos correspondientes? [si/no]: " resp_home_so
   case "$resp_home_so" in
   [Ss][Ii] | [Ss])
-    txtSalida="...\n"
     while IFS= read -r home_path_file; do
       home_file=$(echo "$home_path_file" | rev | cut -d "/" -f 1 | rev)
-      #echo "$home_file"
       if [[ -d "$HOME/$home_file" ]]; then
         if [[ -n "$home_file" ]]; then
-          txtSalida+="... $home_file es un directorio ...\n"
+          echo -e "\n... $home_file es un directorio ...\n"
         fi
       else
         if [[ -f "$HOME/$home_file" ]]; then
-          txtSalida+="... El archivo $home_file ya existe por lo tanto no se copiara, por seguridad se recomienda copiarlo manualmente  ...\n"
+          echo -e "\n... El archivo $home_file ya existe por lo tanto NO se copiará, por seguridad se recomienda copiarlo manualmente  ..."
+          #TODO: poder cambiar la info con vscode (o cualquier otro) utilizando el flag wait
+          #editarInfo "$HOME/$home_file"
         else
           cp Home/"$home_file" $HOME/
-          txtSalida+="... El archivo $home_file se ha copiado correctamente en tu carpeta home ...\n"
+          echo -e "\n... El archivo $home_file se ha copiado correctamente en tu carpeta home ..."
         fi
       fi
     done < <(find "Home/")
-    txtSalida+="...\n"
-    echo -e $txtSalida
     break
     ;;
   [Nn][Oo] | [Nn])

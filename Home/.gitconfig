@@ -34,4 +34,7 @@ untracked = red reverse
 
 #TODO: Separate Repos in work & Personal
 [credential "https://gitlab.com"]
-	provider = generic
+provider = generic
+
+[credential "helperselector"]
+selected = manager-core
