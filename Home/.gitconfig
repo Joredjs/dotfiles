@@ -1,0 +1,40 @@
+[core]
+editor = code --wait
+[diff]
+tool = vscode
+[difftool "vscode"]
+cmd = code --wait --diff $LOCAL $REMOTE
+[merge]
+tool = vscode
+[mergetool "vscode"]
+cmd = code --wait $MERGED
+[user]
+name = joredjs
+email = odraude160@gmail.com
+[winUpdater]
+recentlySeenVersion = 2.25.0.windows.1
+
+[color "branch"]
+current = green bold
+local = green
+remote = yellow
+
+[color "diff"]
+frag = magenta
+meta = yellow
+new = green
+old = red
+newMoved = cyan
+oldMoved = blue
+
+[color "status"]
+added = green reverse
+changed = yellow reverse
+untracked = red reverse
+
+#TODO: Separate Repos in work & Personal
+[credential "https://gitlab.com"]
+provider = generic
+
+[credential "helperselector"]
+selected = manager-core

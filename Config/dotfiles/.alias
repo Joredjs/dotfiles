@@ -1,0 +1,30 @@
+#!/bin/bash
+#Basic navigation
+#alias ---="cd -"
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+
+#personal navigation
+alias home='cd $MY_HOME'
+alias work='cd $MY_WORK'
+alias config='cd $MY_CONFIG'
+
+#utils
+alias f5="source ~/.bash_profile"
+alias ll='ls -al'
+alias lc='ls -ld */'
+alias cls='clear'
+alias open='start .'
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+
+#git
+alias gs='git status -bs'
+alias gbs="git branch -alv --sort=-committerdate --format='%(committerdate:short)  %(objectname:short)  %(refname:short)'"
+alias gcls='git clean -d -f'
+alias gf='git fetch --all'
+alias gl="git log --format='Commit: %Cgreen %H %Creset (%C(cyan)%as%Creset) %s'"
+alias gop='git push origin "$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)"'
+alias gpp='git pull origin "$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)" && gop'
+#alias gdf='git diff --shortstat && git diff --compact-summary'
+
