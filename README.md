@@ -35,6 +35,12 @@ Puedes agregar tu configuración personal dentro de ***Home/.bashrc*** con la in
 - ***Config/dotfiles/bin/.bash_profile***
 - ***Config/dotfiles/bin/.bashrc***
 
+y dentro del script ***myDotFiles.sh***
+
 ### Configuración personalizada
 
-> *Espacio para agregar la información personalida de cada maquína a ser llenada en la rama correspondiente*
+> *Espacio para agregar la información personalizada de cada maquína a ser llenada en la rama correspondiente*
+
+## Explicación dotfiles
+
+***TODO: agregar explicación***

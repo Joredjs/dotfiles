@@ -8,6 +8,9 @@ alias ....="cd ../../.."
 #personal navigation
 alias home='cd $MY_HOME'
 alias work='cd $MY_WORK'
+alias personal='cd $MY_PERSONAL'
+alias w_proy='cd $MY_WORK$MY_PROJECTS_FOLDER'
+alias p_proy='cd $MY_PERSONAL$MY_PROJECTS_FOLDER'
 alias config='cd $MY_CONFIG'
 
 #utils
@@ -28,3 +31,5 @@ alias gop='git push origin "$(git rev-parse --symbolic-full-name --abbrev-ref HE
 alias gpp='git pull origin "$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)" && gop'
 #alias gdf='git diff --shortstat && git diff --compact-summary'
 
+#especificos
+#alias propios de cada máquina / rama
