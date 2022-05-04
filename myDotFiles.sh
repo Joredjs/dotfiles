@@ -53,6 +53,8 @@ config_work="Work"
 config_personal="Personal"
 config_proy="Proyectos"
 
+
+#TODO: crear funcion para poblar las variables por defecto
 while read -r linea; do
 	[[ $linea = *"$var_home="* ]] && config_home=$linea
 	[[ $linea = *"$var_config="* ]] && config_config=$linea
@@ -79,6 +81,8 @@ personal_value=$(eval echo "${personal_value}")
 proy_value=$(echo "$config_proy" | cut -d "=" -f 2)
 proy_value="${proy_value//\"/}"
 proy_value=$(eval echo "${proy_value}")
+
+#TODO: Crear la carpeta Keys
 
 ##Configuración inicial
 while true; do
