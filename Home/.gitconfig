@@ -36,5 +36,6 @@ untracked = red reverse
 [credential "https://gitlab.com"]
 provider = generic
 
-[credential "helperselector"]
-selected = manager-core
+[credential]
+helper = manager
+#Cambio de manager-core a manager https://aka.ms/gcm/rename
