@@ -1,0 +1,86 @@
+{
+  "work": {
+    "companies": [
+      {
+        "name": "wigi",
+        "clients": [
+          {
+            "name": "claro",
+            "repos": {
+              "azure": {
+                "organizations": [
+                  {
+                    "name": "alminspiraclaro",
+                    "url": "https://alminspiraclaro.visualstudio.com",
+                    "proyectos": [
+                      {
+                        "id": "8a8bc1b9-3a56-490c-bb1f-98cf63c02eaa",
+                        "name": "CloudFunctionWebApp"
+                      },
+                      {
+                        "id": "ceb1b529-ab83-4afa-8386-a7da66d92717",
+                        "name": "Flytxt APP"
+                      },
+                      {
+                        "id": "349a2ee2-0a57-4cec-8c64-8a4acf7d682b",
+                        "name": "Claro_te_Ayuda"
+                      },
+                      {
+                        "id": "8bde328f-e725-4799-9b0e-5b2bda86a2a3",
+                        "name": "CLARO_FAQ´S"
+                      },
+                      {
+                        "id": "a5b45fa2-f5a6-4041-ab08-bf08b7348497",
+                        "name": "IVR-CLARO",
+                        "download": true
+                      },
+                      {
+                        "id": "8189154b-7965-44e9-846a-efe65c3964a9",
+                        "name": "Mi_Claro_Consumos",
+                        "download": true
+                      },
+                      {
+                        "id": "000efbae-5b93-44fb-9048-9f7fd07295ed",
+                        "name": "CLARO_BACK_TURNOS"
+                      },
+                      {
+                        "id": "3d051906-caf4-478f-9bb2-33fd7af8dd20",
+                        "name": "App_MiClaro_Backend",
+                        "download": true
+                      },
+                      {
+                        "id": "bed1140b-da04-456c-9314-4ad762be93ad",
+                        "name": "TOBE Visitas",
+                        "download": true
+                      },
+                      {
+                        "id": "48d8a735-52e0-4876-865b-ef4c51b0543d",
+                        "name": "CLARO_FRONT_CATALOGO"
+                      },
+                      {
+                        "id": "fc14cea7-47ee-47ff-8e67-1c34c83c8762",
+                        "name": "LANDING ELIMINACIÓN DE USUARIO"
+                      },
+                      {
+                        "id": "7eee5727-1bec-4026-bb37-f161fd94a030",
+                        "name": "Mi Claro Web Personas",
+                        "download": true
+                      }
+                    ]
+                  }
+                ]
+              },
+              "gitlab": [
+                {
+                  "name": "smarttv_android",
+                  "url": "git@gitlab.com:Wigilabs/Mi-Claro/smarttv_android.git",
+                  "download": true
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
