@@ -107,6 +107,7 @@ if ! foldersStuuf "$home_value"; then
 	return
 fi
 
+#TODO: Si ya existe la carpeta poder modificar la informacion
 #Carpeta Config
 if ! foldersStuuf "$config_value" "Config"; then
 	return

@@ -33,3 +33,6 @@ alias gpp='git pull origin "$(git rev-parse --symbolic-full-name --abbrev-ref HE
 
 #especificos
 #alias propios de cada máquina / rama
+alias wigi='work && cd wigi'
+alias claro='wigi && cd claro'
+alias wom='wigi && cd wom'
