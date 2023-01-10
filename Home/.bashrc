@@ -5,12 +5,14 @@ echo "- Hola $(whoami),"
 #Se deben nombrar como MY_* para que se listen en el comando de ayuda (f1)
 
 #Se recomienda no modificar el nombre de la siguiente variable
-#Si se modifica, verificar el script myDotFiles.sh
+#Si se modifica el nombre, verificar el script myDotFiles.sh
 export MY_HOME="/c/JGARAY"
 
 #Si se modifican los nombres de las variables o se crean nuevas, verificar el archivo Config/dotfiles/.alias
-export MY_WORK="${MY_HOME}/Proyectos"
+export MY_WORK="${MY_HOME}/Work"
+export MY_PERSONAL="${MY_HOME}/Personal"
 export MY_KEYS="${MY_HOME}/Keys"
+export MY_PROJECTS_FOLDER="/Proyectos"
 
 #Ubicacion de los .files
 #Se recomienda no modificar los nombres de las siguientes variables

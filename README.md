@@ -1,6 +1,6 @@
 # DOTFILES
 
-Configuración general para la configuración de los dotfiles, las configuraciones especificas de cada pc, estará en su propia rama
+Configuración general para la configuración de los dotfiles sobre el *sistema operativo Windows*, las configuraciones especificas de cada pc, estará en su propia rama
 
 ```bash
 git branch -al
@@ -12,7 +12,9 @@ Puedes hacer la configuración de tus dotfiles de dos formas, ejecutando el scri
 
 1. Debes definir y crear tu carpeta personal dentro de tu máquina, esta hace referencia a la variable ***MY_HOME*** dentro del archivo ***Home/.bashrc***, el valor de la variable debe ser el mismo a la ruta de esta carpeta
 2. Dentro de la carpeta personal en tu máquina, debes copiar la carpeta Config que se encuentra en este repositorio
-3. En tu carpeta home o raiz (***~***) debes copiar el contenido de la carpeta Home que se encuentra en este repositorio
+3. Dentro de la carpeta personal en tu máquina, debes crear las carpeta Work, Personal y Keys de acuerdo a tu configuración del archivo ***Home/.bashrc***
+4. Dentro de las carpetas Work y Personal debes crear la carpeta que contendrá tus proyectos de acuerdo a tu configuración del archivo ***Home/.bashrc***
+5. En tu carpeta home o raiz (***~***) debes copiar el contenido de la carpeta Home que se encuentra en este repositorio
 
 ## Ejecutando el script (**recomendado**)
 
@@ -35,6 +37,12 @@ Puedes agregar tu configuración personal dentro de ***Home/.bashrc*** con la in
 - ***Config/dotfiles/bin/.bash_profile***
 - ***Config/dotfiles/bin/.bashrc***
 
+y dentro del script ***myDotFiles.sh***
+
 ### Configuración personalizada
 
-> *Espacio para agregar la información personalida de cada maquína a ser llenada en la rama correspondiente*
+> *Espacio para agregar la información personalizada de cada maquína a ser llenada en la rama correspondiente*
+
+## Explicación dotfiles
+
+***TODO: agregar explicación***
