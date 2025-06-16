@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+# Dotfiles Configuration Template
+# This file will be processed during installation to create dotfiles.conf
+
+#=============================================================================
+# REQUIRED: Personal Home Directory
+#=============================================================================
+# This will be set during installation
+export MY_FOLDER_PATH="{{MY_FOLDER_PATH}}"
+export MY_WORK_FOLDER="{{MY_WORK_FOLDER}}"
+export MY_WORK_FOLDER_PATH="{{MY_WORK_FOLDER_PATH}}"
+export MY_PERSONAL_FOLDER="{{MY_PERSONAL_FOLDER}}"
+export MY_PERSONAL_FOLDER_PATH="{{MY_PERSONAL_FOLDER_PATH}}"
+export MY_KEYS_FOLDER="{{MY_KEYS_FOLDER}}"
+export MY_KEYS_FOLDER_PATH="{{MY_KEYS_FOLDER_PATH}}"
+# export MY_PROJECTS_FOLDER="{{MY_FOLDER_PATH}}"
+# export MY_PROJECTS_FOLDER_PATH="{{MY_FOLDER_PATH}}/Projects"
+
+#=============================================================================
+# OPTIONAL: Shell Behavior
+#=============================================================================
+# Shell options to enable
+# Available: nocaseglob, histappend, cdspell, autocd, globstar, extglob
+export SHELL_OPTIONS="${SHELL_OPTIONS:-nocaseglob histappend cdspell autocd globstar}"
+
+#=============================================================================
+# OPTIONAL: Editor Configuration
+#=============================================================================
+# Your preferred text editor (vim, nvim, code, nano, etc.)
+export EDITOR="{{EDITOR}}"
+export VISUAL="{{VISUAL}}"
+export DIFF_TOOL="{{DIFF_TOOL}}"   # Tool for diffs (default: vimdiff)
+export MERGE_TOOL="{{MERGE_TOOL}}" # Tool for merges (default: vimdiff)
+
+#=============================================================================
+# OPTIONAL: Development Languages
+#=============================================================================
+# Languages you work with (affects prompts and tools)
+# Options: python, node, go, rust, java, ruby, php
+export DEVELOPMENT_LANGS="${DEVELOPMENT_LANGS:-python,node,rust}"
+
+#=============================================================================
+# OPTIONAL: Git Configuration
+#=============================================================================
+# Will be set during installation if provided
+export GIT_USER_NAME="{{GIT_USER_NAME}}"
+export GIT_USER_EMAIL="{{GIT_USER_EMAIL}}"
+
+#=============================================================================
+# OPTIONAL: Theme/Prompt Style
+#=============================================================================
+# Options: default, minimal, fancy, dark, light
+export DOTFILES_THEME="${DOTFILES_THEME:-default}"
+export PROMPT_STYLE="${PROMPT_STYLE:-default}"
+
+#=============================================================================
+# OPTIONAL: Custom PATH Additions
+#=============================================================================
+# Additional directories to add to PATH (colon-separated)
+# Example: export CUSTOM_PATHS="/opt/myapp/bin:/usr/local/go/bin"
+export CUSTOM_PATHS="${CUSTOM_PATHS:-}"
+
+#=============================================================================
+# OPTIONAL: Project Folder Names
+#=============================================================================
+# Customize folder names (defaults are usually fine)

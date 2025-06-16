@@ -1,0 +1,133 @@
+# ~/.inputrc - Configuration for readline library (bash input handling)
+
+# Make Tab autocomplete regardless of filename case
+set completion-ignore-case on
+
+# List all matches in case multiple possible completions are possible
+set show-all-if-ambiguous on
+
+# Immediately add a trailing slash when autocompleting symlinks to directories
+set mark-symlinked-directories on
+
+# Use the text that has already been typed as the prefix for searching through
+# commands (basically more intelligent Up/Down behavior)
+"\e[B": history-search-forward
+"\e[A": history-search-backward
+
+# Do not autocomplete hidden files unless the pattern explicitly begins with a dot
+set match-hidden-files off
+
+# Show all autocomplete results at once
+set page-completions off
+
+# If there are more than 200 possible completions for a word, ask to show them all
+set completion-query-items 200
+
+# Show extra file information when completing, like `ls -F` does
+set visible-stats on
+
+# Be more intelligent when autocompleting by also looking at the text after
+# the cursor. For example, when the current line is "cd ~/src/mozil", and
+# the cursor is on the "z", pressing Tab will not autocomplete it to "cd
+# ~/src/mozillail", but to "cd ~/src/mozilla". (This is supported by the
+# Readline used by Bash 4.)
+set skip-completed-text on
+
+# Allow UTF-8 input and output, instead of showing stuff like $'\0123\0456'
+set input-meta on
+set output-meta on
+set convert-meta off
+
+# Use Alt/Meta + Delete to delete the preceding word
+"\e[3;3~": kill-word
+
+# Color files by types
+set colored-stats on
+
+# Append char to indicate type
+set visible-stats on
+
+# Mark symlinked directories
+set mark-symlinked-directories on
+
+# Color the common prefix
+set colored-completion-prefix on
+
+# Color the common prefix in menu-complete
+set menu-complete-display-prefix on
+
+# Key bindings for enhanced navigation
+# Ctrl+Left/Right to move by words
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
+
+# Ctrl+Backspace to delete word backward
+"\C-h": backward-kill-word
+
+# Ctrl+Delete to delete word forward
+"\e[3;5~": kill-word
+
+# Alt+Backspace to delete word backward (alternative)
+"\e\C-h": backward-kill-word
+
+# Home and End keys
+"\e[H": beginning-of-line
+"\e[F": end-of-line
+
+# Insert key
+"\e[2~": quoted-insert
+
+# Delete key
+"\e[3~": delete-char
+
+# Page Up/Down
+"\e[5~": beginning-of-history
+"\e[6~": end-of-history
+
+# Shift+Tab for reverse completion
+"\e[Z": menu-complete-backward
+
+# Ctrl+R for reverse search (already default, but explicit)
+"\C-r": reverse-search-history
+
+# Ctrl+S for forward search
+"\C-s": forward-search-history
+
+# F1 key for help (if using bash with help function)
+"\eOP": "f1\n"
+
+# Enable bracketed paste mode
+set enable-bracketed-paste on
+
+# Timeout for key sequences (in milliseconds)
+set keyseq-timeout 500
+
+# Bell style (none, visible, audible)
+set bell-style visible
+
+# Enable history expansion with space
+# Space: magic-space
+
+# Show mode in prompt (vi mode users)
+set show-mode-in-prompt off
+
+# Vi mode specific settings (uncomment if you prefer vi mode)
+# set editing-mode vi
+# set keymap vi-command
+# set keymap vi-insert
+
+# Emacs mode (default - explicit setting)
+set editing-mode emacs
+
+# Enable incremental search
+# set incremental-search-backward "\C-r"
+# set incremental-search-forward "\C-s"
+
+# Better completion for directories
+set completion-prefix-display-length 2
+
+# Don't ring bell on completion
+set bell-style none
+
+# Auto-complete on first tab press
+set show-all-if-unmodified on

@@ -1,41 +1,81 @@
-[core]
-editor = code --wait
-[diff]
-tool = vscode
-[difftool "vscode"]
-cmd = code --wait --diff $LOCAL $REMOTE
-[merge]
-tool = vscode
-[mergetool "vscode"]
-cmd = code --wait $MERGED
 [user]
-name = joredjs
-email = odraude160@gmail.com
-[winUpdater]
-recentlySeenVersion = 2.25.0.windows.1
+# These will be set by the install script
+# name = Your Name
+# email = your.email@example.com
+[init]
+defaultBranch = main
 
+[color]
+ui = auto
 [color "branch"]
 current = green bold
 local = green
 remote = yellow
-
 [color "diff"]
-frag = magenta
 meta = yellow
-new = green
-old = red
-newMoved = cyan
-oldMoved = blue
-
+frag = magenta bold
+old = red bold
+new = green bold
+whitespace = red reverse
 [color "status"]
-added = green reverse
-changed = yellow reverse
-untracked = red reverse
+added = green bold
+changed = yellow bold
+untracked = red bold
 
-#TODO: Separate Repos in work & Personal
+[core]
+editor = ${EDITOR:-vim} --wait
+# Better diffs
+pager = less -FRX
+whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+# Handle line endings
+autocrlf = input
+# Make Git case sensitive
+ignorecase = false
+
+[diff]
+# Use better diff algorithm
+algorithm = histogram
+# Show moved lines in different color
+colorMoved = default
+# External diff tool
+tool = ${DIFF_TOOL:-vimdiff}
+[difftool]
+prompt = false
+[difftool "vscode"]
+cmd = code --wait --diff $LOCAL $REMOTE
+[difftool "vimdiff"]
+cmd = vim -d $LOCAL $REMOTE
+
+[merge]
+# Include summary in merge commits
+log = true
+# External merge tool
+tool = ${MERGE_TOOL:-vimdiff}
+[mergetool]
+prompt = false
+keepBackup = false
+[mergetool "vscode"]
+cmd = code --wait $MERGED
+[mergetool "vimdiff"]
+cmd = vim -d $LOCAL $MERGED $REMOTE -c 'wincmd J'
+
+[pull]
+rebase = false
+[push]
+# Push only current branch
+default = current
+# Push tags automatically
+followTags = true
+[fetch]
+# Remove deleted remote branches
+prune = true
+
+[credential]
+# Use system credential helper
+helper = manager
+
 [credential "https://gitlab.com"]
 provider = generic
 
-[credential]
-helper = manager
-#Cambio de manager-core a manager https://aka.ms/gcm/rename
+[credential "cache"]
+timeout = 3600

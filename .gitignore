@@ -1,0 +1,78 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Editor files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Sensitive/Local files
+config/bash/local.bash
+config/bash/private.bash
+config/git/local
+.env
+.env.local
+secrets/
+*.key
+*.pem
+*.crt
+
+# Backup files
+*.backup
+*.bak
+*.old
+.dotfiles_backup/
+
+# Cache/Temp files
+*.cache
+*.log
+*.tmp
+.temp/
+tmp/
+
+# Language specific
+__pycache__/
+*.py[cod]
+*$py.class
+node_modules/
+.npm/
+.yarn/
+.pnpm-store/
+
+# Personal data
+config/*/history
+config/*/cache/
+config/*/sessions/
+
+# Machine specific configs
+host-*/
+local-*/
+
+# Test files
+test/
+tests/
+*.test
+
+# Documentation build
+docs/_build/
+docs/.doctrees/
+
+# Package manager
+vendor/
+.bundle/
+
+# Keep empty directories
+!.gitkeep
+
+config/dotfiles.conf

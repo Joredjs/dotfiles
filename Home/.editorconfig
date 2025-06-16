@@ -1,9 +1,97 @@
 root = true
 
+# Universal settings for all files
 [*]
-indent_style = tab
-indent_size = 2
 charset = utf-8
-trim_trailing_whitespace = true
 end_of_line = lf
-insert_final_new_line = true
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = tab
+indent_size = 4
+
+# Files that REQUIRE spaces
+# =========================
+
+# Python - PEP 8 requires spaces
+[*.py]
+indent_style = space
+indent_size = 4
+max_line_length = 88
+
+# YAML - Tabs are not allowed by spec
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+
+# Markdown - Many parsers have issues with tabs
+[*.{md,markdown}]
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = false
+max_line_length = 80
+
+# Files that commonly use spaces (but tabs work too)
+# ==================================================
+
+# You can comment out any of these if you prefer tabs
+
+# Ruby community strongly prefers spaces
+[*.rb]
+indent_style = space
+indent_size = 2
+
+# JavaScript/TypeScript often use spaces (but tabs work)
+# [*.{js,jsx,ts,tsx,mjs,cjs}]
+# indent_style = space
+# indent_size = 2
+
+# Web files often use spaces
+# [*.{html,htm,css,scss,sass,less,vue}]
+# indent_style = space
+# indent_size = 2
+
+# JSON commonly uses spaces
+# [*.json]
+# indent_style = space
+# indent_size = 2
+
+# All other files use default (tabs)
+# ==================================
+
+# Shell scripts
+[*.{sh,bash,zsh}]
+indent_size = 2
+
+# Go already prefers tabs
+[*.go]
+indent_size = 4
+
+# Makefile MUST use tabs
+[{Makefile,makefile,GNUmakefile,*.mk}]
+indent_style = tab
+indent_size = 4
+
+# C/C++/Java/C#
+[*.{java,c,cpp,cc,cxx,h,hpp,cs}]
+indent_size = 4
+
+# Config files
+[*.{toml,ini,properties,xml}]
+indent_size = 4
+
+# Special handling
+# ================
+
+# Minified files
+[*.{min.js,min.css}]
+insert_final_newline = false
+trim_trailing_whitespace = false
+
+# Binary files
+[*.{ico,png,jpg,jpeg,gif,webp,svg,woff,woff2,ttf,eot,pdf,zip,tar,gz}]
+indent_style = unset
+indent_size = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+charset = unset

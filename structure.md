@@ -4,8 +4,6 @@ dotfiles/
 ├── install.sh              # Script de instalación principal
 ├── README.md              # Documentación mejorada
 ├── .gitignore             # Ignorar archivos sensibles
-├── Makefile               # Comandos de instalación alternativos
-│
 ├── config/                # Configuraciones para ~/.config (XDG)
 │   ├── dotfiles.conf      # Configuración centralizada
 │   ├── bash/              # Configuración modular de bash
