@@ -1,192 +1,193 @@
 #!/usr/bin/env bash
-# Bash prompt configuration
+# Bash prompt configuration - FIXED VERSION for Git Bash
 
-echo "Loading prompt configuration..."
+[[ "${DOTFILES_SILENT:-}" != "1" ]] && echo "$(date +%T): Loading prompt configuration ..."
 
-# Git prompt support
+# Variables globales para cache simple
+_git_prompt_cache=""
+_git_prompt_cache_pwd=""
+_git_prompt_cache_time=0
+_git_cache_timeout=5
+
+# Función de Git prompt con cache simple (compatible con Bash 3.x+)
 git_prompt() {
-	local branchName=""
-	local s=""
+    local current_pwd="$(pwd)"
+    local current_time=$(date +%s 2>/dev/null || echo "0")
 
-	# Check if we're in a git repo
-	git rev-parse --is-inside-work-tree &>/dev/null || return
+    # Verificar cache simple
+    if [[ "$_git_prompt_cache_pwd" == "$current_pwd" ]] &&
+       [[ -n "$_git_prompt_cache" ]] &&
+       [[ $((current_time - _git_prompt_cache_time)) -lt $_git_cache_timeout ]]; then
+        echo -e "$_git_prompt_cache"
+        return
+    fi
 
-	# Get branch name
-	branchName="$(git symbolic-ref --quiet --short HEAD 2>/dev/null ||
-		git describe --all --exact-match HEAD 2>/dev/null ||
-		git rev-parse --short HEAD 2>/dev/null ||
-		echo '(unknown)')"
+    # Verificar si estamos en un repo Git (rápido)
+    if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+        _git_prompt_cache=""
+        _git_prompt_cache_pwd="$current_pwd"
+        _git_prompt_cache_time="$current_time"
+        return
+    fi
 
-	# Check for uncommitted changes
-	if ! git diff --quiet --ignore-submodules --cached; then
-		s+="+" # Staged changes
-	fi
+    # Obtener nombre de branch (optimizado)
+    local branchName=""
+    branchName=$(git symbolic-ref --quiet --short HEAD 2>/dev/null) || \
+    branchName=$(git rev-parse --short HEAD 2>/dev/null) || \
+    branchName="(detached)"
 
-	if ! git diff-files --quiet --ignore-submodules --; then
-		s+="!" # Unstaged changes
-	fi
+    # Stats de git (versión simplificada)
+    local stats_result=""
+    stats_result=$(git_stats_simple)
 
-	if [ -n "$(git ls-files --others --exclude-standard)" ]; then
-		s+="?" # Untracked files
-	fi
+    local result="git=>${1}(${branchName})${2}${stats_result} "
 
-	if git rev-parse --verify refs/stash &>/dev/null; then
-		s+="$" # Stashed changes
-	fi
+    # Guardar en cache
+    _git_prompt_cache="$result"
+    _git_prompt_cache_pwd="$current_pwd"
+    _git_prompt_cache_time="$current_time"
 
-	[ -n "${s}" ] && s=" [${s}]"
-
-	echo -e " ${1}git(${branchName})${2} - staged:${s}"
+    echo -e "$result"
 }
 
-# Displays the number of files pending commit
-git_stats() {
-	STATUS=$(git status -s 2>/dev/null)
+# Función simplificada de git stats (más compatible)
+git_stats_simple() {
+    # Una sola llamada a git status con formato porcelain
+    local status_output=""
+    status_output=$(git status --porcelain 2>/dev/null)
 
-	ADDED=$(echo "$STATUS" | grep -c 'A ')
-	UNTRACKED=$(echo "$STATUS" | grep -c '??')
-	MODIFIED=$(echo "$STATUS" | grep -c 'M ')
-	RENAMED=$(echo "$STATUS" | grep -c 'R ')
-	COPIED=$(echo "$STATUS" | grep -c 'C ')
-	UNMERGED=$(echo "$STATUS" | grep -c 'U')
-	DELETED=$(echo "$STATUS" | grep -c 'D ')
+    # Si no hay cambios, retornar vacío
+    if [[ -z "$status_output" ]]; then
+        return 0
+    fi
 
-	stat_a=$((ADDED + UNTRACKED))
-	stat_m=$((MODIFIED + RENAMED + COPIED + UNMERGED))
-	stat_d=$((DELETED))
+    # Contadores simples
+    local stat_a=0 stat_m=0 stat_d=0
 
-	STATS=""
-	if [ $stat_a != 0 ]; then
-		STATS+="${GIT_STAGED_COLOR} $stat_a "
-	fi
-	if [ $stat_d != 0 ]; then
-		STATS+="${GIT_DELETED_COLOR} $stat_d "
-	fi
-	if [ $stat_m != 0 ]; then
-		STATS+="${GIT_MODIFIED_COLOR} $stat_m "
-	fi
+    # Procesar línea por línea usando while read (más compatible)
+    while IFS= read -r line; do
+        if [[ -n "$line" ]]; then
+            local status_code="${line:0:2}"
+            case "$status_code" in
+                "A "|"??") stat_a=$((stat_a + 1)) ;;
+                "M "|"R "|"C "|"UU"|" M") stat_m=$((stat_m + 1)) ;;
+                "D "|" D") stat_d=$((stat_d + 1)) ;;
+            esac
+        fi
+    done <<< "$status_output"
 
-	echo -e "stats:$STATS${RESET}"
+    # Construir string de stats
+    local stats=""
+    if [[ $stat_a -gt 0 ]]; then
+        stats+="${GIT_STAGED_COLOR:-\033[0;32m}${stat_a}-"
+    fi
+    if [[ $stat_d -gt 0 ]]; then
+        stats+="${GIT_DELETED_COLOR:-\033[0;31m}${stat_d}-"
+    fi
+    if [[ $stat_m -gt 0 ]]; then
+        stats+="${GIT_MODIFIED_COLOR:-\033[0;33m}${stat_m}"
+    fi
+
+    if [[ -n "$stats" ]]; then
+        echo "[$stats${RESET}]"
+    fi
 }
 
-# Get virtualenv info
+# Funciones auxiliares simples
 __virtualenv_prompt() {
-	if [[ -n "$VIRTUAL_ENV" ]]; then
-		echo " ($(basename "$VIRTUAL_ENV"))"
-	fi
+    if [[ -n "$VIRTUAL_ENV" ]]; then
+        echo " ($(basename "$VIRTUAL_ENV"))"
+    fi
 }
 
-# Get node version if in a node project
-__node_prompt() {
-	if [[ -f "package.json" ]] && command -v node &>/dev/null; then
-		echo " [node $(node -v 2>/dev/null | sed 's/v//')]"
-	fi
-}
-
-# Get kubernetes context if kubectl is available
-__kube_prompt() {
-	if command -v kubectl &>/dev/null && [[ -f "$HOME/.kube/config" ]]; then
-		local context
-		context=$(kubectl config current-context 2>/dev/null)
-		if [[ -n "$context" ]]; then
-			echo " [k8s:${context}]"
-		fi
-	fi
-}
-
-# Check if SSH connection
 __ssh_prompt() {
-	if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
-		echo "⚡"
-	fi
+    if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
+        echo "⚡"
+    fi
 }
 
-# Setup the main prompt
+# Setup del prompt principal
 setup_prompt() {
-	local prompt_symbol="$"
+    local prompt_symbol="$"
 
-	# User color (red for root)
-	if [[ "${USER}" == "root" ]]; then
-		PS1_USER_COLOR="${RED}"
-		prompt_symbol="#"
-	fi
+    # Color para root
+    if [[ "${USER}" == "root" ]]; then
+        PS1_USER_COLOR="${RED:-\033[0;31m}"
+        prompt_symbol="#"
+    fi
 
-	# Host color (different for SSH)
-	if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
-		PS1_HOST_COLOR="${RED}"
-	fi
+    # Color para SSH
+    if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
+        PS1_HOST_COLOR="${RED:-\033[0;31m}"
+    fi
 
-	# Build the prompt
-	PS1="\[\033]0;\W\007\]" # Terminal title
+    # Usar colores por defecto si no están definidos
+    PS1_USER_COLOR="${PS1_USER_COLOR:-\033[0;32m}"
+    PS1_HOST_COLOR="${PS1_HOST_COLOR:-\033[0;34m}"
+    PS1_PATH_COLOR="${PS1_PATH_COLOR:-\033[0;36m}"
+    PS1_GIT_COLOR="${PS1_GIT_COLOR:-\033[0;35m}"
+    PS1_TIME_COLOR="${PS1_TIME_COLOR:-\033[0;33m}"
+    PS1_PROMPT_COLOR="${PS1_PROMPT_COLOR:-\033[0;37m}"
+    WHITE="${WHITE:-\033[0;37m}"
+    BOLD="${BOLD:-\033[1m}"
+    RESET="${RESET:-\033[0m}"
 
-	# First line: user@host:path time
-	PS1+="\n"                                                   # New line
-	PS1+="\[${PS1_USER_COLOR}\]\u\[${RESET}\]"                  # Username
-	PS1+="\[${WHITE}\]@\[${RESET}\]"                            # @
-	PS1+="\[${PS1_HOST_COLOR}\]\h\[${RESET}\]"                  # Hostname
-	PS1+="$(__ssh_prompt)"                                      # SSH indicator
-	PS1+="\[${WHITE}\]:\[${RESET}\]"                            # :
-	PS1+="\[${BOLD}${PS1_PATH_COLOR}\]\w\[${RESET}\]"           # Working directory
-	PS1+='`git_prompt "\$PS1_GIT_COLOR" "\$RESET"` `git_stats`' # Git branch info and git stats
-	PS1+='${YELLOW}`__virtualenv_prompt`${RESET}'               # Virtualenv info
-	PS1+='${GREEN}`__node_prompt`${RESET}'                      # Node version info
-	PS1+='${BLUE}`__kube_prompt`${RESET}'                       # Kubernetes context info
-	PS1+="\$[${PS1_TIME_COLOR}\]\A\[${RESET}\]"                 # Time in HH:MM format
+    # Construir prompt
+    PS1="\[\033]0;\W\007\]"                                    # Terminal title
+    PS1+="\n"                                                  # New line
+    PS1+="\[${PS1_USER_COLOR}\]\u\[${RESET}\]"                 # Username
+    PS1+="\[${WHITE}\]@\[${RESET}\]"                           # @
+    PS1+="\[${PS1_HOST_COLOR}\]\h\[${RESET}\]"                 # Hostname
+    PS1+="\[${WHITE}\]:\[${RESET}\]"                           # :
+    PS1+="\[${BOLD}${PS1_PATH_COLOR}\]\w \[${RESET}\]"         # Working directory
+		PS1+='`git_prompt "\$PS1_GIT_COLOR" "\$RESET"`'           # Git info (cached)
+    PS1+="\[${PS1_TIME_COLOR}\]\A\[${RESET}\]"                 # Time
+    PS1+="\n"                                                  # New line
+    PS1+="\${PS1_PROMPT_COLOR}\]${prompt_symbol}\[${RESET} "
 
-	# Second line: prompt symbol
-	PS1+="\n"
-	PS1+="\[${PS1_PROMPT_COLOR}\]${prompt_symbol}\[${RESET}\] "
+    # Continuation prompt
+    PS2="${YELLOW:-\033[0;33m}→ \[${RESET}\]"
 
-	# Continuation prompt
-	PS2="\[${YELLOW}\]→ \[${RESET}\]"
-
-	# Debug prompt
-	PS4='+ ${BASH_SOURCE:-}:${LINENO:-}: ${FUNCNAME[0]:-}(): '
+    # Debug prompt
+    PS4='+ ${BASH_SOURCE:-}:${LINENO:-}: ${FUNCNAME[0]:-}(): '
 }
 
-# Alternative minimal prompt
+# Prompt alternativo minimal
 minimal_prompt() {
-	PS1="\W \$ "
-	PS2="> "
+    PS1="\W \$ "
+    PS2="> "
 }
 
-# Alternative fancy prompt with powerline symbols
-fancy_prompt() {
-	# Requires powerline fonts
-	local sep=""
-	local subsep=""
-
-	PS1="\n"
-	PS1+="\[${BG_BLUE}${WHITE}\] \u \[${BLUE}${BG_CYAN}\]${sep}"
-	PS1+="\[${BLACK}${BG_CYAN}\] \h \[${CYAN}${BG_PURPLE}\]${sep}"
-	PS1+="\[${WHITE}${BG_PURPLE}\] \w \[${PURPLE}${RESET}\]${sep}"
-	PS1+="\$(__git_prompt \" ${GREEN}\" \"${RESET}\")"
-	PS1+="\n\[${ORANGE}\]❯\[${RESET}\] "
+# Limpiar cache cada cierto tiempo (función compatible)
+_cleanup_git_cache() {
+    local current_time=$(date +%s 2>/dev/null || echo "0")
+    if [[ $((current_time - _git_prompt_cache_time)) -gt $((git_cache_timeout * 3)) ]]; then
+        _git_prompt_cache=""
+        _git_prompt_cache_pwd=""
+        _git_prompt_cache_time=0
+    fi
 }
 
-# Set prompt based on preference
+# Configurar según preferencia
 case "${PROMPT_STYLE:-default}" in
-minimal)
-	minimal_prompt
-	;;
-fancy)
-	if [[ "$TERM" == *"256color"* ]]; then
-		fancy_prompt
-	else
-		setup_prompt
-	fi
-	;;
-*)
-	setup_prompt
-	;;
+    minimal)
+        minimal_prompt
+        ;;
+    *)
+        setup_prompt
+        ;;
 esac
 
-# Export prompts
+# Agregar limpieza de cache al PROMPT_COMMAND si no existe
+if [[ "$PROMPT_COMMAND" != *"_cleanup_git_cache"* ]]; then
+    PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND; }_cleanup_git_cache"
+fi
+
+# Exportar prompts
 export PS1 PS2 PS4
 
-# Enable color in ls and grep
+# Configuración de colores para ls y grep
 export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
-# export GREP_OPTIONS='--color=auto'
 
-echo "Prompt configuration loaded successfully."
+[[ "${DOTFILES_SILENT:-}" != "1" ]] && echo "$(date +%T): Prompt configuration loaded successfully."

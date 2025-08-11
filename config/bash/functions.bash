@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Bash functions configuration
 
-echo "Loading functions configuration..."
+[[ "${DOTFILES_SILENT:-}" != "1" ]] && echo "$(date +%T): Loading functions configuration ..."
 
 # Create directory and enter it
 ##Uso: $ mkcd {nombreCarpeta}
@@ -130,6 +130,15 @@ glog() {
 	git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit "$@"
 }
 
+# Remove files from git index (staging area)
+grm() {
+	if [ $# -eq 0 ]; then
+		echo "Usage: grm <file>"
+		return 1
+	fi
+	git rm --cached "$@"
+}
+
 # Remove git branches that have been merged
 # gclean() {
 #     echo "Branches merged into main/master:"
@@ -158,12 +167,12 @@ topmem() {
 }
 
 # Get public IP with location info
-myip() {
-	echo "Public IP: $(curl -s https://api.ipify.org)"
-	curl -s "https://ipapi.co/$(curl -s https://api.ipify.org)/json/" |
-		jq -r '. | "Location: \(.city), \(.region), \(.country_name)"' 2>/dev/null ||
-		echo "Location info not available"
-}
+# myip() {
+# 	echo "Public IP: $(curl -s https://api.ipify.org)"
+# 	curl -s "https://ipapi.co/$(curl -s https://api.ipify.org)/json/" |
+# 		jq -r '. | "Location: \(.city), \(.region), \(.country_name)"' 2>/dev/null ||
+# 		echo "Location info not available"
+# }
 
 # Development functions
 # --------------------
@@ -184,28 +193,28 @@ genpass() {
 }
 
 # Show colors available in terminal
-colors() {
-	local fgc bgc vals seq0
+# colors() {
+# 	local fgc bgc vals seq0
 
-	printf "Color escapes are %s\n" '\e[${value};...;${value}m'
-	printf "Values 30..37 are \e[33mforeground colors\e[m\n"
-	printf "Values 40..47 are \e[43mbackground colors\e[m\n"
-	printf "Value  1 gives a  \e[1mbold-faced look\e[m\n\n"
+# 	printf "Color escapes are %s\n" '\e[${value};...;${value}m'
+# 	printf "Values 30..37 are \e[33mforeground colors\e[m\n"
+# 	printf "Values 40..47 are \e[43mbackground colors\e[m\n"
+# 	printf "Value  1 gives a  \e[1mbold-faced look\e[m\n\n"
 
-	for fgc in {30..37}; do
-		for bgc in {40..47}; do
-			fgc=${fgc#37}
-			bgc=${bgc#40}
-			vals="${fgc:+$fgc;}${bgc}"
-			vals=${vals%%;}
-			seq0="${vals:+\e[${vals}m}"
-			printf "  %-9s" "${seq0:-(default)}"
-			printf " ${seq0}TEXT\e[m"
-			printf " \e[${vals:+${vals+$vals;}}1mBOLD\e[m"
-		done
-		echo
-		echo
-	done
-}
+# 	for fgc in {30..37}; do
+# 		for bgc in {40..47}; do
+# 			fgc=${fgc#37}
+# 			bgc=${bgc#40}
+# 			vals="${fgc:+$fgc;}${bgc}"
+# 			vals=${vals%%;}
+# 			seq0="${vals:+\e[${vals}m}"
+# 			printf "  %-9s" "${seq0:-(default)}"
+# 			printf " ${seq0}TEXT\e[m"
+# 			printf " \e[${vals:+${vals+$vals;}}1mBOLD\e[m"
+# 		done
+# 		echo
+# 		echo
+# 	done
+# }
 
-echo "Functions configuration loaded successfully."
+[[ "${DOTFILES_SILENT:-}" != "1" ]] && echo "$(date +%T): Functions loaded successfully."

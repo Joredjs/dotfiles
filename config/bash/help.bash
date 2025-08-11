@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Help system for dotfiles
 
-echo "Loading help system..."
+[[ "${DOTFILES_SILENT:-}" != "1" ]] && echo "$(date +%T): Loading help system ..."
 
 # Main help function
 f1() {
@@ -289,4 +289,4 @@ help() {
 # Export the help function
 export -f f1 help
 
-echo "Help system loaded. Use 'f1' for main help menu."
+[[ "${DOTFILES_SILENT:-}" != "1" ]] && echo "$(date +%T): Help system loaded. Use 'f1' for main help menu."

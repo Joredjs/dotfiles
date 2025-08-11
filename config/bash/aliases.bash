@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Bash aliases configuration
 
-echo "Loading aliases configuration..."
+[[ "${DOTFILES_SILENT:-}" != "1" ]] && echo "$(date +%T): Loading aliases configuration ..."
 
 # Navigation aliases
 alias ..='cd ..'
@@ -134,7 +134,7 @@ if command -v nvim &>/dev/null; then
 fi
 
 # OS specific aliases
-case "$OS_TYPE" in
+case "$OS" in
 macos)
 	alias showfiles='defaults write com.apple.finder AppleShowAllFiles -bool true && killall Finder'
 	alias hidefiles='defaults write com.apple.finder AppleShowAllFiles -bool false && killall Finder'
@@ -159,27 +159,25 @@ windows)
 esac
 
 # Python aliases
-if command -v python3 &>/dev/null; then
-	alias python='python3'
-	alias pip='pip3'
-	alias venv='python -m venv'
-	alias activate='source venv/bin/activate 2>/dev/null || source .venv/bin/activate'
-fi
+
+alias python='python3'
+alias pip='pip3'
+alias venv='python -m venv'
+alias activate='source venv/bin/activate 2>/dev/null || source .venv/bin/activate'
 
 # Node aliases
-if command -v node &>/dev/null; then
-	alias npmi='npm install'
-	alias npmid='npm install --save-dev'
-	alias npmig='npm install -g'
-	alias npmr='npm run'
-	alias npms='npm start'
-	alias npmt='npm test'
-	alias npmb='npm run build'
-fi
+
+alias npmi='npm install'
+alias npmid='npm install --save-dev'
+alias npmig='npm install -g'
+alias npmr='npm run'
+alias npms='npm start'
+alias npmt='npm test'
+alias npmb='npm run build'
 
 # Quick edit configs
 alias bashrc='${EDITOR:-vim} ~/.bashrc'
 alias aliases='${EDITOR:-vim} ${XDG_CONFIG_HOME:-$HOME/.config}/bash/aliases.bash'
 alias gitconfig='${EDITOR:-vim} ~/.gitconfig'
 
-echo "Aliases configuration loaded successfully."
+[[ "${DOTFILES_SILENT:-}" != "1" ]] && echo "$(date +%T): Aliases configuration loaded successfully."

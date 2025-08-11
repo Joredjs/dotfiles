@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # ~/.bashrc: executed by bash(1) for non-login shells.
+echo "Initializing dotfiles ... $(date +%T)"
 
 # If not running interactively, don't do anything
 case $- in
@@ -154,3 +155,9 @@ main
 
 # Cleanup
 unset -f main load_bash_config set_shell_options configure_history show_welcome dotfiles_error
+
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)
+
+echo "dotfiles loaded. $(date +%T)"

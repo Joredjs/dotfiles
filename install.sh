@@ -69,37 +69,20 @@ setup_configuration() {
 	local git_name=""
 	local git_email=""
 
-	# Detect better defaults based on OS
-	case "$OS" in
-	Windows)
-		if command -v code &>/dev/null; then
-			editor="code"
-			visual="code"
-			diff_tool="code"
-			merge_tool="code"
-		fi
-		;;
-	Mac)
-		if command -v code &>/dev/null; then
-			editor="code"
-			visual="code"
-			diff_tool="code"
-			merge_tool="code"
-		elif command -v nvim &>/dev/null; then
-			editor="nvim"
-			visual="nvim"
-		fi
-		;;
-	Linux)
-		if command -v nvim &>/dev/null; then
-			editor="nvim"
-			visual="nvim"
-		elif command -v nano &>/dev/null; then
-			editor="nano"
-			visual="nano"
-		fi
-		;;
-	esac
+	# default editor
+	if command -v code &>/dev/null; then
+		editor="code"
+		visual="code"
+		diff_tool="code"
+		merge_tool="code"
+	elif command -v nvim &>/dev/null; then
+		editor="nvim"
+		visual="nvim"
+	elif command -v nano &>/dev/null; then
+		editor="nano"
+		visual="nano"
+	fi
+
 
 	echo
 	echo "Let's configure your dotfiles. Press Enter to use defaults shown in [brackets]."

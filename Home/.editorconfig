@@ -40,22 +40,15 @@ max_line_length = 80
 indent_style = space
 indent_size = 2
 
-# JavaScript/TypeScript often use spaces (but tabs work)
-# [*.{js,jsx,ts,tsx,mjs,cjs}]
-# indent_style = space
-# indent_size = 2
+# JavaScript/TypeScript
+[*.{js,jsx,ts,tsx,mjs,cjs}]
+indent_size = 2
 
-# Web files often use spaces
-# [*.{html,htm,css,scss,sass,less,vue}]
-# indent_style = space
-# indent_size = 2
+# Web files
+[*.{html,htm,css,scss,sass,less,vue,json}]
+indent_size = 2
 
-# JSON commonly uses spaces
-# [*.json]
-# indent_style = space
-# indent_size = 2
-
-# All other files use default (tabs)
+# Files use default (tabs)
 # ==================================
 
 # Shell scripts
